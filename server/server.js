@@ -2,7 +2,7 @@
 
 var express = require('express');
 var path = require('path');
-
+var fs = require('fs');
 var app = express();
 app.use(express.static(path.join(__dirname, "../app/dist")));
 
@@ -13,13 +13,15 @@ server.listen(7777);
 
 let irc = require('irc');
 
+let pass = fs.readFileSync('./ircpass');
+
 const settings = {
 channels : ["#bberry7"],
 server : "irc.twitch.tv",
 port: 6667,
 secure: false,
 nick : "beestats",
-password : "oauth:p71d06hef85yy7z7bl5o44nvz84k6x"
+password : pass
 }
 
 const ircbot = new irc.Client(settings.server, settings.nick, {
