@@ -14,7 +14,7 @@ server.listen(7777);
 let irc = require('irc');
 
 let pass = fs.readFileSync('./ircpass');
-
+console.log('pass:', pass);
 const settings = {
 channels : ["#bberry7"],
 server : "irc.twitch.tv",
