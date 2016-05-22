@@ -1,0 +1,36 @@
+{
+  "name": "beestats",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "browserify": "browserify -t reactify ./app/main.jsx > ./app/dist/main.js",
+    "copy-base": "cp {app/index.html,app/styles/style.css} app/dist",
+    "copy-bootstrap": "cp {app/lib/bootstrap-css/css/bootstrap.min.css,app/lib/bootstrap-css/js/bootstrap.min.js} app/dist",
+    "copy-jquery": "cp app/lib/jquery/dist/jquery.min.js app/dist",
+    "copy-images": "cp app/images/*.png app/dist",
+    "copy-fa" : "cp app/lib/font-awesome/css/font-awesome.min.css app/dist",
+    "copy-fa-fonts": "cp app/lib/font-awesome/fonts/* app/dist/fonts",
+    "copy-josefin-sans" : "cp app/lib/josefin-sans/* app/dist/fonts",
+    "copy": "npm run copy-base && npm run copy-bootstrap && npm run copy-jquery && npm run copy-images && npm run copy-fa && npm run copy-fa-fonts",
+    "build": "npm run copy && npm run browserify",
+    "start": "npm run build && nodemon server/server.js"
+  },
+  "author": "Brett Berry <byb810@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "browserify": "^13.0.1",
+    "bufferutil": "^1.2.1",
+    "express": "^4.13.4",
+    "guid": "0.0.12",
+    "react": "^15.0.2",
+    "react-dom": "^15.0.2",
+    "react-fontawesome": "^1.1.0",
+    "react-redux": "^4.4.5",
+    "reactify": "^1.1.1",
+    "redux": "^3.5.2",
+    "socket.io": "^1.4.6",
+    "utf-8-validate": "^1.2.1",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}

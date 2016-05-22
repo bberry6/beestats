@@ -1,0 +1,21 @@
+{
+  "name": "beestats",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Brett Berry <byb810@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-css": "^3.3.6"
+  }
+}
