@@ -9,9 +9,9 @@
     "copy-bootstrap": "cp {app/lib/bootstrap-css/css/bootstrap.min.css,app/lib/bootstrap-css/js/bootstrap.min.js} app/dist",
     "copy-jquery": "cp app/lib/jquery/dist/jquery.min.js app/dist",
     "copy-images": "cp app/images/*.png app/dist",
-    "copy-fa" : "cp app/lib/font-awesome/css/font-awesome.min.css app/dist",
+    "copy-fa": "cp app/lib/font-awesome/css/font-awesome.min.css app/dist",
     "copy-fa-fonts": "cp app/lib/font-awesome/fonts/* app/dist/fonts",
-    "copy-josefin-sans" : "cp app/lib/josefin-sans/* app/dist/fonts",
+    "copy-josefin-sans": "cp app/lib/josefin-sans/* app/dist/fonts",
     "copy": "npm run copy-base && npm run copy-bootstrap && npm run copy-jquery && npm run copy-images && npm run copy-fa && npm run copy-fa-fonts",
     "build": "npm run copy && npm run browserify",
     "start": "npm run build && nodemon server/server.js"
@@ -21,8 +21,12 @@
   "dependencies": {
     "browserify": "^13.0.1",
     "bufferutil": "^1.2.1",
+    "classnames": "^2.2.5",
     "express": "^4.13.4",
     "guid": "0.0.12",
+    "irc": "^0.5.0",
+    "pg-promise": "^4.2.6",
+    "ramda": "^0.21.0",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
     "react-fontawesome": "^1.1.0",
@@ -30,6 +34,7 @@
     "reactify": "^1.1.1",
     "redux": "^3.5.2",
     "socket.io": "^1.4.6",
+    "socket.io-client": "^1.4.6",
     "utf-8-validate": "^1.2.1",
     "vinyl-source-stream": "^1.1.0"
   }
