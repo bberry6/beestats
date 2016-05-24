@@ -15,7 +15,7 @@
     "copy": "npm run copy-base && npm run copy-bootstrap && npm run copy-jquery && npm run copy-images && npm run copy-fa && npm run copy-fa-fonts",
     "build": "npm run copy && npm run browserify",
     "start": "node server/server.js",
-    "postinstall": "npm run build"
+    "postinstall": "mkdir app/dist && mkdir app/dist/fonts && npm run build"
   },
   "author": "Brett Berry <byb810@gmail.com>",
   "license": "MIT",
