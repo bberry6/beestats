@@ -1,0 +1,113 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: sneezes; Type: TABLE; Schema: public; Owner: brett; Tablespace: 
+--
+
+CREATE TABLE sneezes (
+    id integer NOT NULL,
+    reporter character varying,
+    count integer,
+    "time" character varying
+);
+
+
+ALTER TABLE public.sneezes OWNER TO brett;
+
+--
+-- Name: sneezes_id_seq; Type: SEQUENCE; Schema: public; Owner: brett
+--
+
+CREATE SEQUENCE sneezes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.sneezes_id_seq OWNER TO brett;
+
+--
+-- Name: sneezes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: brett
+--
+
+ALTER SEQUENCE sneezes_id_seq OWNED BY sneezes.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: brett
+--
+
+ALTER TABLE ONLY sneezes ALTER COLUMN id SET DEFAULT nextval('sneezes_id_seq'::regclass);
+
+
+--
+-- Data for Name: sneezes; Type: TABLE DATA; Schema: public; Owner: brett
+--
+
+COPY sneezes (id, reporter, count, "time") FROM stdin;
+2	bberry7	98	1463942541390
+3	neodraoturtle	99	1463942664138
+4	howardci	100	1463945041053
+6	howardci	102	1463948188738
+5	siuranger13	101	1463946770861
+7	bberry7	103	1463951514483
+9	bberry7	97	1463781900000
+10	howardci	104	1463955506994
+11	howardci	105	1463964028630
+12	bberry7	106	1464016260000
+13	Strongfold	107	1464016320000
+\.
+
+
+--
+-- Name: sneezes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: brett
+--
+
+SELECT pg_catalog.setval('sneezes_id_seq', 13, true);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: brett
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM brett;
+GRANT ALL ON SCHEMA public TO brett;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
