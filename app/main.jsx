@@ -6,7 +6,7 @@ var Redux = require('redux');
 //var Dashboard = require('./components/dashboard/dashboard.jsx');
 var FontAwesome = require('react-fontawesome');
 var io = require('socket.io-client');
-var classNames = require('classNames');
+var classNames = require('classnames');
 
 // main.jsx
 
