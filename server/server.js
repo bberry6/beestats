@@ -1,35 +1,35 @@
 'use strict';
 
-var express = require('express');
-var path = require('path');
-var fs = require('fs');
-var app = express();
+let express = require('express');
+let path = require('path');
+let fs = require('fs');
+let app = express();
 app.use(express.static(path.join(__dirname, "../app/dist")));
 
 app.get('*', function(req, res){
-  res.sendFile(path.resolve(__dirname + '/../dist/index.html'));
+  res.sendFile(path.resolve(__dirname + '../dist/index.html'));
 });
 
 
-var pgp = require('pg-promise')();
-var R = require('ramda');
-var cn = {
+let pgp = require('pg-promise')();
+let R = require('ramda');
+let cn = process.env.PG_URL || {
    host: 'localhost',
    port: 5432,
    database: 'beestats',
    user: 'brett'
 }
-var db = pgp(cn);
+let db = pgp(cn);
 
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
+let server = require('http').Server(app);
+let io = require('socket.io')(server);
 
-server.listen(80);
+let port = Number(process.env.BEESTATS_PORT) || 8001;
+server.listen(port);
 
 let irc = require('irc');
 
-let pass = fs.readFileSync('./ircpass', {encoding: 'utf8'});
-console.log('pass:', pass);
+let pass = process.env.TWITCH_AUTH || fs.readFileSync('./ircpass', {encoding: 'utf8'});
 const settings = {
    channels : ["#courtiebee"],
    server : "irc.twitch.tv",

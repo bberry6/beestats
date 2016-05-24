@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "browserify": "browserify -t reactify ./app/main.jsx > ./app/dist/main.js",
-    "copy-base": "cp {app/index.html,app/styles/style.css} app/dist",
-    "copy-bootstrap": "cp {app/lib/bootstrap-css/css/bootstrap.min.css,app/lib/bootstrap-css/js/bootstrap.min.js} app/dist",
+    "copy-base": "cp app/index.html app/styles/style.css app/dist",
+    "copy-bootstrap": "cp app/lib/bootstrap-css/css/bootstrap.min.css app/lib/bootstrap-css/js/bootstrap.min.js app/dist",
     "copy-jquery": "cp app/lib/jquery/dist/jquery.min.js app/dist",
     "copy-images": "cp app/images/*.png app/dist",
     "copy-fa": "cp app/lib/font-awesome/css/font-awesome.min.css app/dist",
@@ -14,7 +14,8 @@
     "copy-josefin-sans": "cp app/lib/josefin-sans/* app/dist/fonts",
     "copy": "npm run copy-base && npm run copy-bootstrap && npm run copy-jquery && npm run copy-images && npm run copy-fa && npm run copy-fa-fonts",
     "build": "npm run copy && npm run browserify",
-    "start": "npm run build && nodemon server/server.js"
+    "start": "node server/server.js",
+    "postinstall": "npm run build"
   },
   "author": "Brett Berry <byb810@gmail.com>",
   "license": "MIT",

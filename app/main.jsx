@@ -162,9 +162,8 @@ class BeeStats extends Component {
 }
 
 
-var socket = io('http://beestats.mooo.com');
+var socket = io(window.location.protocol + "//" + window.location.host);
 socket.on('sneeze', (data) => {
-   console.log('RECEIVED DATA: ', data);
    store.dispatch({
       count: data.count,
       reporter: data.reporter,
@@ -173,7 +172,6 @@ socket.on('sneeze', (data) => {
    })
 });
 socket.on('initSneezes', (data) => {
-   console.log('received init sneezes: ', data);
    store.dispatch({
       type: 'INIT_SNEEZES',
       sneezes: data
