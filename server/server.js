@@ -41,7 +41,6 @@ const settings = {
 
 const ircbot = new irc.Client(settings.server, settings.nick, {
    channels: [settings.channels[0] + " " + settings.password],
-   debug: true,
    password: settings.password,
    username: settings.nick
 });
