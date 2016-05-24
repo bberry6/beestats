@@ -40,11 +40,11 @@ const sidebar = (state = _scenes, action) => {
 const sidebarVisible = (state = true, action) => {
    switch(action.type){
       case "TOGGLE_VISIBILITY":
-         return !state
+         return !state;
       default:
          return state;
    }
-}
+};
 
 /*
 var initSneezes = [{

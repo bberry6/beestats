@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "browserify": "browserify -t reactify ./app/main.jsx > ./app/dist/main.js",
+    "browserify-prod": "browserify app/main.jsx -o ./app/dist/main.js -t [ babelify --presets [ es2015 react ] ]",
+    "browserify-dev": "browserify app/main.jsx -t reactify > ./app/dist/main.js",
     "copy-base": "cp app/index.html app/styles/style.css app/dist",
     "copy-bootstrap": "cp app/lib/bootstrap-css/css/bootstrap.min.css app/lib/bootstrap-css/js/bootstrap.min.js app/dist",
     "copy-jquery": "cp app/lib/jquery/dist/jquery.min.js app/dist",
@@ -12,14 +13,16 @@
     "copy-fa": "cp app/lib/font-awesome/css/font-awesome.min.css app/dist",
     "copy-fa-fonts": "cp app/lib/font-awesome/fonts/* app/dist/fonts",
     "copy-josefin-sans": "cp app/lib/josefin-sans/* app/dist/fonts",
-    "copy": "npm run copy-base && npm run copy-bootstrap && npm run copy-jquery && npm run copy-images && npm run copy-fa && npm run copy-fa-fonts",
-    "build": "npm run copy && npm run browserify",
+    "copy": "npm run copy-base && npm run copy-bootstrap && npm run copy-jquery && npm run copy-images && npm run copy-fa && npm run copy-fa-fonts && npm run copy-josefin-sans",
+    "build": "npm run copy && npm run browserify-prod",
+    "build-dev": "npm run copy && npm run browserify-dev",
     "start": "node server/server.js",
     "postinstall": "mkdir app/dist && mkdir app/dist/fonts && npm run build"
   },
   "author": "Brett Berry <byb810@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "babelify": "^7.3.0",
     "browserify": "^13.0.1",
     "bufferutil": "^1.2.1",
     "classnames": "^2.2.5",
