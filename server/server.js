@@ -24,7 +24,7 @@ let db = pgp(cn);
 let server = require('http').Server(app);
 let io = require('socket.io')(server);
 
-let port = Number(process.env.BEESTATS_PORT) || 8001;
+let port = Number(process.env.PORT) || 8001;
 server.listen(port);
 
 let irc = require('irc');
