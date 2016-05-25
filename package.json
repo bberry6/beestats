@@ -9,7 +9,7 @@
     "copy-base": "cp app/index.html app/styles/style.css app/dist",
     "copy-bootstrap": "cp app/lib/bootstrap-css/css/bootstrap.min.css app/lib/bootstrap-css/js/bootstrap.min.js app/dist",
     "copy-jquery": "cp app/lib/jquery/dist/jquery.min.js app/dist",
-    "copy-images": "cp app/images/*.png app/dist",
+    "copy-images": "cp app/images/* app/dist",
     "copy-fa": "cp app/lib/font-awesome/css/font-awesome.min.css app/dist",
     "copy-fa-fonts": "cp app/lib/font-awesome/fonts/* app/dist/fonts",
     "copy-josefin-sans": "cp app/lib/josefin-sans/* app/dist/fonts",

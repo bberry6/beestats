@@ -7,10 +7,10 @@ let app = express();
 let pgp = require('pg-promise')();
 let R = require('ramda');
 
-app.use(express.static(path.join(__dirname, "../app/dist")));
+app.use(express.static(path.join(__dirname, "/../app/dist")));
 
 app.get('*', function(req, res){
-  res.sendFile(path.resolve(__dirname + '../dist/index.html'));
+  res.sendFile(path.join(__dirname,'/../app/dist/index.html'));
 });
 
 let dbURL = process.env.DATABASE_URL;

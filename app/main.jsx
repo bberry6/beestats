@@ -12,9 +12,9 @@ var classNames = require('classnames');
 
 var _scenes = [{name: 'Sneezes', img:'courtieFace.png', active: true},
                {name:'Bites (Soon™)',img: 'courtieBee.png'},
-               {name:'Subs (Soon™)',img:'courtieHeart.png'},
-               {name:'Tournies (Soon™)',img: 'courtieBam.png'},
-               {name: 'Homegames (Soon™)',img: 'courtieWink.png'}];
+               {name:'Subs/Emotes (Soon™)',img:'courtieHeart.png'},
+               {name: 'Homegames (Soon™)',img: 'courtieBam.png'},
+               {name: 'Bad beats? (Soon™)', img: 'courtieTilt.png'}];
 _scenes = _scenes.map((itm, idx) => {
    return Object.assign({}, {id: idx }, itm);
 });
