@@ -250,7 +250,6 @@ function drawSneezeTopFive() {
    sneezeData = Object.keys(sneezeData).map((k, i)=>{
       return [k,sneezeData[k],'color:'+colors[i]];
    });
-   console.log('sneezeData: ', sneezeData);
    let data = new google.visualization.DataTable();
    data.addColumn('string', 'Username');
    data.addColumn('number', 'Count');
