@@ -13,8 +13,9 @@ app.get('*', function(req, res){
   res.sendFile(path.join(__dirname,'/../app/dist/index.html'));
 });
 
-let dbURL = process.env.DATABASE_URL || 'postgres://lpstffnvdviaxu:IQDhpeC5QqtLaad9T1x0KW-QXc@ec2-50-17-255-6.compute-1.amazonaws.com:5432/d1ea9met6poi5r';
+let dbURL = process.env.DATABASE_URL;
 if(!dbURL){
+   console.log('process.env: ', process.env);
    throw new Error("No database url supplied!");
 }
 let parsed= URL.parse(dbURL);
