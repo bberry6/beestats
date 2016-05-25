@@ -322,14 +322,17 @@ class StopWatch extends Component {
                </div>
             </div>
             <div className="row">
-               <div className="col-sm-3">{f.days}
+               <div className="col-sm-3">
+                  <h4>{ftime.days}</h4>
                </div>
-               <div className="col-sm-3">{f.hours}
+               <div className="col-sm-3">
+                  <h4>{ftime.hours}</h4>
                </div>
-               <div className="col-sm-3">{f.mins}
+               <div className="col-sm-3">
+                  <h4>{ftime.mins}</h4>
                </div>
-               <div className="col-sm-3">{f.secs}
-                  <h2>{formattedSeconds(this.state.secondsElapsed)}</h2>
+               <div className="col-sm-3">
+                  <h4>{ftime.secs}</h4>
                </div>
             </div>
          </div>
