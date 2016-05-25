@@ -16,7 +16,7 @@
     "copy": "npm run copy-base && npm run copy-bootstrap && npm run copy-jquery && npm run copy-images && npm run copy-fa && npm run copy-fa-fonts && npm run copy-josefin-sans",
     "build": "npm run copy && npm run browserify-prod",
     "build-dev": "npm run copy && npm run browserify-dev",
-    "start": "node server/server.js",
+    "start": "DATABASE_URL=$(heroku config:get DATABASE_URL -a heroku-postgres-c07d0a72) node server/server.js",
     "start-dev": "DATABASE_URL=$(heroku config:get DATABASE_URL -a heroku-postgres-c07d0a72) node server/server.js",
     "postinstall": "mkdir app/dist && mkdir app/dist/fonts && npm run build"
   },
