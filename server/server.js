@@ -1,26 +1,32 @@
 'use strict';
-
+let URL = require('url');
 let express = require('express');
 let path = require('path');
 let fs = require('fs');
 let app = express();
+let pgp = require('pg-promise')();
+let R = require('ramda');
+
 app.use(express.static(path.join(__dirname, "../app/dist")));
 
 app.get('*', function(req, res){
   res.sendFile(path.resolve(__dirname + '../dist/index.html'));
 });
 
-
-let pgp = require('pg-promise')();
-let R = require('ramda');
-let cn = process.env.PG_URL || {
-   host: 'localhost',
-   port: 5432,
-   database: 'beestats',
-   user: 'brett'
+let dbURL = process.env.DATABASE_URL;
+if(!dbURL){
+   throw new Error("No database url supplied!");
+}
+let parsed= URL.parse(dbURL);
+let cn = {
+   host: parsed.hostname,
+   port: Number(parsed.port),
+   database: parsed.path.replace(/\//,''),
+   user: parsed.auth.split(':')[0],
+   password: parsed.auth.split(':')[1],
+   ssl: true
 }
 let db = pgp(cn);
-
 let server = require('http').Server(app);
 let io = require('socket.io')(server);
 

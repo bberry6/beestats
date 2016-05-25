@@ -399,7 +399,7 @@ var SneezesDashboard = React.createClass({
                <div className="col-xs-7">
                   <div className="panel panel-default">
                      <div className="panel-heading">
-                        <h2>Since last sneeze</h2>
+                        <h3>Since last sneeze</h3>
                      </div>
                      <div className="panel-body">
                         <StopWatch />

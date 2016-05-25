@@ -17,6 +17,7 @@
     "build": "npm run copy && npm run browserify-prod",
     "build-dev": "npm run copy && npm run browserify-dev",
     "start": "node server/server.js",
+    "start-dev": "DATABASE_URL=$(heroku config:get DATABASE_URL -a heroku-postgres-c07d0a72) node server/server.js",
     "postinstall": "mkdir app/dist && mkdir app/dist/fonts && npm run build"
   },
   "author": "Brett Berry <byb810@gmail.com>",
