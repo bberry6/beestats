@@ -287,9 +287,11 @@ class SneezeTopFive extends Component {
 }
 
 const formattedSeconds = (sec) => {
-   var hours = Math.floor(sec/3600);
-   var mins = Math.floor(sec/60).toString().slice(-2);
-   return hours + ":" + mins + ":" + ('0' + sec % 60).slice(-2);
+   let days = Math.floor(sec/86400);
+   let hours = ('0' + Math.floor(sec/3600) % 24).slice(-2);
+   let mins = ('0' + Math.floor(sec/60) % 60).slice(-2);
+   let secs = ('0' + sec % 60).slice(-2);
+   return {days, hours, mins, secs};
 }
 
 
@@ -302,13 +304,33 @@ class StopWatch extends Component {
 
    }
    render(){
+      let ftime = formattedSeconds(this.state.secondsElapsed);
       return (
-         <div className="row">
-            <div className="col-sm-6">
-               <h2>Since last sneeze:</h2>
+         <div>
+            <div className="row">
+               <div className="col-sm-3">
+                  <h4><i>Days</i></h4>
+               </div>
+               <div className="col-sm-3">
+                  <h4><i>Hours</i></h4>
+               </div>
+               <div className="col-sm-3">
+                  <h4><i>Minutes</i></h4>
+               </div>
+               <div className="col-sm-3">
+                  <h4><i>Seconds</i></h4>
+               </div>
             </div>
-            <div className="col-sm-6">
-               <h2>{formattedSeconds(this.state.secondsElapsed)}</h2>
+            <div className="row">
+               <div className="col-sm-3">{f.days}
+               </div>
+               <div className="col-sm-3">{f.hours}
+               </div>
+               <div className="col-sm-3">{f.mins}
+               </div>
+               <div className="col-sm-3">{f.secs}
+                  <h2>{formattedSeconds(this.state.secondsElapsed)}</h2>
+               </div>
             </div>
          </div>
       )
@@ -373,6 +395,9 @@ var SneezesDashboard = React.createClass({
                </div>
                <div className="col-xs-7">
                   <div className="panel panel-default">
+                     <div className="panel-heading">
+                        <h2>Since last sneeze</h2>
+                     </div>
                      <div className="panel-body">
                         <StopWatch />
                      </div>
