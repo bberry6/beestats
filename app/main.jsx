@@ -248,7 +248,12 @@ function drawSneezeTopFive() {
    },{});
    let colors = ['red','blue','green','purple','orange'];
    sneezeData = Object.keys(sneezeData).map((k, i)=>{
-      return [k,sneezeData[k],'color:'+colors[i]];
+      return [k,sneezeData[k]];
+   })
+   .sort((a,b)=>{ return a[1] < b[1]; })
+   .map((a,i) => {
+      a[2] = 'color:'+colors[i]];
+      return a;
    });
    sneezeData = sneezeData.slice(0,5);
    let data = new google.visualization.DataTable();
