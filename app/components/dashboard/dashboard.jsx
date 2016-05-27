@@ -1,20 +1,37 @@
+const React = require('react');
+const { Component } = React;
 
-const React = require("react");
+let SneezesDashboard = require('./sneezes/sneezesDashboard.jsx');
+let NotReady = require('./notReady/notReady.jsx');
 
-module.exports = React.createClass({
-   render: function() {
-      return(
-         <div id="page-content-wrapper">
-             <div class="container-fluid">
-                 <div class="row">
-                     <div class="col-lg-12">
-                         <h1>Simple Sidebar</h1>
-                         <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
-                         <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
-                     </div>
-                 </div>
-             </div>
-         </div>
-       )
+class Dashboard extends Component {
+   componentDidMount(){
+      const {store} = this.context;
+      this.unsubscribe = store.subscribe(() => {
+         this.forceUpdate();
+      });
    }
-});
+   componentWillUnmount(){
+      this.unsubscribe();
+   }
+   render() {
+      let {store} = this.context;
+      return (
+         <div>
+         {(() => {
+           switch (store.getState().sidebar.filter((i)=>{return i.active})[0].name) {
+             case "Sneezes":
+               return <SneezesDashboard store={store}/>;
+             default:
+               return <NotReady />;
+           }
+         })()}
+         </div>
+      )
+   }
+}
+Dashboard.contextTypes = {
+   store: React.PropTypes.object
+};
+
+module.exports = Dashboard;
