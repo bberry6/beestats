@@ -13,30 +13,30 @@ class StopWatch extends Component {
       return (
          <div>
             <div className="row">
-               <div className="col-sm-3">
+               <div className="col-md-3">
                   <h4><i>Days</i></h4>
                </div>
-               <div className="col-sm-3">
+               <div className="col-md-3">
                   <h4><i>Hours</i></h4>
                </div>
-               <div className="col-sm-3">
+               <div className="col-md-3">
                   <h4><i>Minutes</i></h4>
                </div>
-               <div className="col-sm-3">
+               <div className="col-md-3">
                   <h4><i>Seconds</i></h4>
                </div>
             </div>
             <div className="row">
-               <div className="col-sm-3">
+               <div className="col-md-3">
                   <h4>{ftime.days}</h4>
                </div>
-               <div className="col-sm-3">
+               <div className="col-md-3">
                   <h4>{ftime.hours}</h4>
                </div>
-               <div className="col-sm-3">
+               <div className="col-md-3">
                   <h4>{ftime.mins}</h4>
                </div>
-               <div className="col-sm-3">
+               <div className="col-md-3">
                   <h4>{ftime.secs}</h4>
                </div>
             </div>

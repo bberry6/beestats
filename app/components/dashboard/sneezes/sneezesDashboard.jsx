@@ -19,7 +19,7 @@ class SneezesDashboard extends Component {
                </div>
             </div>
             <div className="row">
-               <div className="col-xs-5">
+               <div className="col-md-5">
                   <div className="panel panel-default">
                      <div className="panel-body" style={{textAlign: 'center'}}><h2>Sneeze Count: {store.getState().sneezeList[0].count}</h2></div>
                   </div>
@@ -49,7 +49,7 @@ class SneezesDashboard extends Component {
                      </div>
                   </div>
                </div>
-               <div className="col-xs-7">
+               <div className="col-md-7">
                   <div className="panel panel-default">
                      <div className="panel-heading">
                         <h3>Since last sneeze</h3>
@@ -80,46 +80,61 @@ class SneezesDashboard extends Component {
       )
    }
    componentDidMount(){
-      let {store} = this.props;
-      drawSneezeFrequency(store);
-      drawSneezeTopFive(store);
+      $(window).resize(drawCharts.bind(null, this.props.store));
+      drawCharts(this.props.store);
    }
    componentDidUpdate(){
-      let {store} = this.props;
-      drawSneezeFrequency(store);
-      drawSneezeTopFive(store);
+      drawCharts(this.props.store);
+   }
+   componentWillUnmount(){
+      $(window).off('resize', drawCharts);
    }
 };
 
+const drawCharts = (store) => {
+   drawSneezeTopFive(store);
+   drawSneezeFrequency(store);
+}
 
 function drawSneezeFrequency(store) {
    let sneezeData = store.getState().sneezeList.reduce((freq, sn, i)=>{
       let snDate = new Date(Number(sn.time));
-      let fDate = new Date((snDate.getMonth()+1) + '/' + snDate.getDate() +'/' + snDate.getFullYear());
-      let fDateMillis = fDate.getTime().toString();
-      if(!freq[fDateMillis]){
-         freq[fDateMillis] = {d: fDateMillis, c: 0};
+      let fDate = (snDate.getMonth()+1) + '/' + snDate.getDate();
+      let fDateMillis = (new Date(fDate)).getTime();
+      if(!freq[fDate]){
+         freq[fDate] = {d: fDate, c: 0, millis: fDateMillis };
       }
-      freq[fDateMillis].c++;
+      freq[fDate].c++;
       return freq;
    },{});
    sneezeData = Object.keys(sneezeData).map((k, i)=>{
-      return [new Date(Number(sneezeData[k].d)),sneezeData[k].c];
-   });
+      return [sneezeData[k].d,sneezeData[k].c,sneezeData[k].millis];
+   })
+   .sort((a,b)=> a[2] > b[2])
+   .map(a => [a[0],a[1]]);
    let data = new google.visualization.DataTable();
-   data.addColumn('date', 'Time');
+   data.addColumn('string', 'Time');
    data.addColumn('number', 'Count');
 
    data.addRows(sneezeData);
 
-   var options = {
+   const options = {
       hAxis: { title: "Time" },
-      vAxis: { title: "Count"},
+      vAxis: { title: "Count", gridLines: {
+         count: 4
+      }},
       curveType: 'function',
-      legend: { position: 'none'}
+      legend: { position: 'none'},
+      width: '100%',
+      height: '100%',
+      chartArea: {
+         height: '70%',
+         top: '6%'
+      },
+
    };
 
-   var chart = new google.visualization.LineChart(document.getElementById('sneeze_frequency'));
+   let chart = new google.visualization.LineChart(document.getElementById('sneeze_frequency'));
 
    chart.draw(data, options);
 }
@@ -154,7 +169,13 @@ function drawSneezeTopFive(store) {
    var options = {
       hAxis: { title: "Usernames"},
       vAxis: { title: "Count"},
-      legend: {position: 'none'}
+      legend: {position: 'none'},
+      width: '100%',
+      height: '100%',
+      chartArea: {
+         height: '70%',
+         top: '8%'
+      }
    };
 
    var chart = new google.visualization.ColumnChart(document.getElementById('sneeze_top_five'));
