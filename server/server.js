@@ -24,7 +24,7 @@ let cn = {
    port: Number(parsed.port),
    database: parsed.path.replace(/\//,''),
    user: parsed.auth.split(':')[0],
-   password: parsed.auth.split(':')[1],
+   password: parsed.auth.split(':')[1] || '',
    ssl: true
 }
 let db = pgp(cn);
@@ -65,7 +65,7 @@ ircbot.addListener('message',  (fr, ch, message) => {
       let count = Number(message.split(' ')[2]);
       db.none("insert into sneezes(count, reporter, time) values ($1, $2, $3)",[count, reporter, curTime.toString()])
       .then(() => {
-         io.to('sneezeRoom').emit('sneeze', {
+         io.to('beestats').emit('sneeze', {
             reporter: reporter,
             time: curTime,
             count: count
@@ -75,12 +75,16 @@ ircbot.addListener('message',  (fr, ch, message) => {
 });
 
 io.on('connection', function (socket) {
-   socket.join('sneezeRoom');
+   socket.join('beestats');
    db.any("select * from sneezes")
    .then((sneezes) => {
       let sortByCount = R.sortBy(R.prop('count'));
       sneezes = sortByCount(sneezes);
       socket.emit('initSneezes', sneezes.reverse());
+   });
+   fs.readdir(path.join(__dirname,'/../app/dist/swarmshots'), function(err, files){
+      console.log('FILES BEING SENT: ', files.map(s=>'swarmshots/'+s));
+      socket.emit('initSwarmShots', files.map(s=>{ return {img: 'swarmshots/'+s};}));
    });
    socket.on('join', (from, msg)=>{
       socket.leave(msg.toLeave);

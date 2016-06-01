@@ -1,6 +1,7 @@
 var _scenes = [{name: 'Sneezes', img:'courtieFace.png', active: true},
+               {name: 'Swarm Shots', img: 'courtieHeart.png'},
                {name:'Bites (Soon™)',img: 'courtieBee.png'},
-               {name:'Subs/Emotes (Soon™)',img:'courtieHeart.png'},
+               {name:'Emotes (Soon™)',img:'courtieWut.png'},
                {name: 'Homegames (Soon™)',img: 'courtieBam.png'},
                {name: 'Bad beats? (Soon™)', img: 'courtieTilt.png'}];
 _scenes = _scenes.map((itm, idx) => {

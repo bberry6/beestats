@@ -3,6 +3,10 @@
    src: url(fonts/JosefinSans-Light.ttf);
 }
 
+#imagemodal .modal-dialog {
+   width: 80%;
+}
+
 /*
  * Sidebar
  */

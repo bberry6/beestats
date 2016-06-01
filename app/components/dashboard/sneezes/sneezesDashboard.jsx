@@ -80,14 +80,10 @@ class SneezesDashboard extends Component {
       )
    }
    componentDidMount(){
-      $(window).resize(drawCharts.bind(null, this.props.store));
       drawCharts(this.props.store);
    }
    componentDidUpdate(){
       drawCharts(this.props.store);
-   }
-   componentWillUnmount(){
-      $(window).off('resize', drawCharts);
    }
 };
 

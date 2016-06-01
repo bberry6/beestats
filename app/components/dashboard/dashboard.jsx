@@ -2,6 +2,7 @@ const React = require('react');
 const { Component } = React;
 
 let SneezesDashboard = require('./sneezes/sneezesDashboard.jsx');
+let SwarmShotsDashboard = require('./swarmshots/swarmshotsDashboard.jsx');
 let NotReady = require('./notReady/notReady.jsx');
 
 class Dashboard extends Component {
@@ -22,6 +23,8 @@ class Dashboard extends Component {
            switch (store.getState().sidebar.filter((i)=>{return i.active})[0].name) {
              case "Sneezes":
                return <SneezesDashboard store={store}/>;
+             case "Swarm Shots":
+               return <SwarmShotsDashboard store={store}/>
              default:
                return <NotReady />;
            }

@@ -13,13 +13,15 @@ const Dashboard = require("./components/dashboard/dashboard.jsx");
 const sidebar = require('./reducers/sidebar.jsx');
 const sneezeList = require('./reducers/sneezeList.jsx')
 const sidebarVisible = require('./reducers/sidebarVisible.jsx');
+const swarmShots = require('./reducers/swarmshots.jsx');
 
 // build app.
 const { combineReducers } = Redux;
 const beeStatsApp = combineReducers({
    sidebar,
    sidebarVisible,
-   sneezeList
+   sneezeList,
+   swarmShots
 });
 
 // init socket.io
@@ -38,7 +40,12 @@ socket.on('initSneezes', (data) => {
       sneezes: data
    });
 });
-
+socket.on('initSwarmShots', (data) => {
+   store.dispatch({
+      type: "INIT_SHOTS",
+      swarmshots: data
+   });
+});
 // get store
 const { createStore } = Redux;
 const store = createStore(beeStatsApp);

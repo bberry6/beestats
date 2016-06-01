@@ -51,12 +51,15 @@ class StopWatch extends Component {
          return curTime - lastSneeze;
       }
       var diff = getDiff();
-      this.setState({secondsElapsed:diff});
-      setInterval( () => {
+      let intervalId = setInterval( () => {
          return this.setState({
             secondsElapsed: this.state.secondsElapsed + 1
          });
       }, 1000);
+      this.setState({secondsElapsed: diff, intervalId: intervalId});
+   }
+   componentWillUnmount(){
+      clearInterval(this.state.intervalId);
    }
 }
 
