@@ -12,7 +12,7 @@ class Shot extends Component {
                   selectedImg: this.props.img
                })
             }>
-               <img className="img-responsive" src={this.props.img} alt/>
+               <img className="img" src={this.props.img} alt/>
             </a>
          </div>
       )

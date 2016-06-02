@@ -21,7 +21,13 @@ class SneezesDashboard extends Component {
             <div className="row">
                <div className="col-md-5">
                   <div className="panel panel-default">
-                     <div className="panel-body" style={{textAlign: 'center'}}><h2>Sneeze Count: {store.getState().sneezeList[0].count}</h2></div>
+                     <div className="panel-body" style={{textAlign: 'center'}}><h2>Sneeze Count: {(()=>{
+                        let list = store.getState().sneezeList;
+                        if(list.length){
+                           return list[0].count;
+                        }
+                        return 0;
+                     })()}</h2></div>
                   </div>
                   <div className="panel panel-default">
                      <div className="panel-heading">

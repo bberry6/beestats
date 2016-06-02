@@ -45,7 +45,9 @@ class StopWatch extends Component {
    }
    componentDidMount(){
       const {store} = this.props;
-      let lastSneeze = Math.floor(Number(store.getState().sneezeList[0].time)/1000);
+      let sneezeList = store.getState().sneezeList;
+      let lastTime = sneezeList.length ? sneezeList[0].time : Date.now()
+      let lastSneeze = Math.floor(Number(lastTime)/1000);
       let getDiff = () => {
          let curTime = Math.floor((new Date().getTime())/1000);
          return curTime - lastSneeze;
