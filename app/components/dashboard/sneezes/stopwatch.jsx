@@ -44,7 +44,7 @@ class StopWatch extends Component {
       )
    }
    componentDidMount(){
-      const {store} = this.props;
+      let {store} = this.props;
       let sneezeList = store.getState().sneezeList;
       let lastTime = sneezeList.length ? sneezeList[0].time : Date.now()
       let lastSneeze = Math.floor(Number(lastTime)/1000);
@@ -53,6 +53,26 @@ class StopWatch extends Component {
          return curTime - lastSneeze;
       }
       var diff = getDiff();
+      let intervalId = setInterval( () => {
+         return this.setState({
+            secondsElapsed: this.state.secondsElapsed + 1
+         });
+      }, 1000);
+      this.setState({secondsElapsed: diff, intervalId: intervalId});
+   }
+   componentWillReceiveProps(){
+      let {store} = this.props;
+      let sneezeList = store.getState().sneezeList;
+      let lastTime = sneezeList.length ? sneezeList[0].time : Date.now()
+      let lastSneeze = Math.floor(Number(lastTime)/1000);
+      let getDiff = () => {
+         let curTime = Math.floor((new Date().getTime())/1000);
+         return (curTime - lastSneeze) >= 0 ? curTime - lastSneeze :  0;
+      }
+      let diff = getDiff();
+      if(this.state.intervalId){
+         clearInterval(this.state.intervalId);
+      }
       let intervalId = setInterval( () => {
          return this.setState({
             secondsElapsed: this.state.secondsElapsed + 1

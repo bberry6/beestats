@@ -10,9 +10,9 @@ const sidebarDisplay = ({sidebar, sidebarVisible}) =>(
          </div>
          <ul className="nav nav-sidebar">
          {
-            sidebar.map(function(s){
+            sidebar.map(function(s, idx){
                return (
-                  <SidebarOption opt={s} key={s.id} />
+                  <SidebarOption opt={s} key={idx} />
                );
             })
          }

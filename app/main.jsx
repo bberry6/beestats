@@ -24,28 +24,7 @@ const beeStatsApp = combineReducers({
    swarmShots
 });
 
-// init socket.io
-let socket = io(window.location.protocol + "//" + window.location.host);
-socket.on('sneeze', (data) => {
-   store.dispatch({
-      count: data.count,
-      reporter: data.reporter,
-      time: data.time,
-      type: 'ADD_SNEEZE'
-   })
-});
-socket.on('initSneezes', (data) => {
-   store.dispatch({
-      type: 'INIT_SNEEZES',
-      sneezes: data
-   });
-});
-socket.on('initSwarmShots', (data) => {
-   store.dispatch({
-      type: "INIT_SHOTS",
-      swarmshots: data
-   });
-});
+
 // get store
 const { createStore } = Redux;
 const store = createStore(beeStatsApp);
@@ -65,6 +44,29 @@ const init =  () => {
    }
    store.subscribe(render);
    render();
+
+   // init socket.io
+   let socket = io(window.location.protocol + "//" + window.location.host);
+   socket.on('sneeze', (data) => {
+      store.dispatch({
+         count: data.count,
+         reporter: data.reporter,
+         time: data.time,
+         type: 'ADD_SNEEZE'
+      })
+   });
+   socket.on('initSneezes', (data) => {
+      store.dispatch({
+         type: 'INIT_SNEEZES',
+         sneezes: data
+      });
+   });
+   socket.on('initSwarmShots', (data) => {
+      store.dispatch({
+         type: "INIT_SHOTS",
+         swarmshots: data
+      });
+   });
 }
 
 // render when google is done loading

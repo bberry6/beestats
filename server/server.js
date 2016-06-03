@@ -38,7 +38,7 @@ let irc = require('irc');
 
 let pass = process.env.TWITCH_AUTH || fs.readFileSync('./ircpass', {encoding: 'utf8'});
 const settings = {
-   channels : ["#courtiebee"],
+   channels : ["#bberry7"],
    server : "irc.twitch.tv",
    port: 6667,
    secure: false,
@@ -83,7 +83,6 @@ io.on('connection', function (socket) {
       socket.emit('initSneezes', sneezes.reverse());
    });
    fs.readdir(path.join(__dirname,'/../app/dist/swarmshots'), function(err, files){
-      console.log('FILES BEING SENT: ', files.map(s=>'swarmshots/'+s));
       socket.emit('initSwarmShots', files.map(s=>{ return {img: 'swarmshots/'+s};}));
    });
    socket.on('join', (from, msg)=>{

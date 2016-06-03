@@ -44,9 +44,9 @@ class SneezesDashboard extends Component {
                            </thead>
                            <tbody>
                            {
-                              store.getState().sneezeList.slice(0,20).map((sneeze) =>{
+                              store.getState().sneezeList.slice(0,20).map((sneeze,idx) =>{
                                  return (
-                                    <SneezeItem sneeze={sneeze} key={sneeze.id} />
+                                    <SneezeItem sneeze={sneeze} key={idx} />
                                  )
                               })
                            }
