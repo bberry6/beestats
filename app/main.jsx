@@ -67,6 +67,24 @@ const init =  () => {
          swarmshots: data
       });
    });
+
+
+     Twitch.init({clientId: 'sdueuuz1fe2m3m8lnmnfkxr0tlzckbl'}, function(err, status){
+        if(status.authenticated){
+           socket.emit('twitchAuthLogin', status.token);
+        }
+
+
+        /*
+        Twitch.logout(function(e){
+           if(e){
+             console.log('error logging out: ', e);
+           }
+           console.log('log out called');
+        })
+        */
+
+     });
 }
 
 // render when google is done loading
