@@ -14,6 +14,7 @@ const sidebar = require('./reducers/sidebar.jsx');
 const sneezeList = require('./reducers/sneezeList.jsx')
 const sidebarVisible = require('./reducers/sidebarVisible.jsx');
 const swarmShots = require('./reducers/swarmshots.jsx');
+const socketApi = require('./reducers/socketApi.jsx');
 
 // build app.
 const { combineReducers } = Redux;
@@ -21,9 +22,11 @@ const beeStatsApp = combineReducers({
    sidebar,
    sidebarVisible,
    sneezeList,
-   swarmShots
+   swarmShots,
+   socketApi
 });
 
+window.React = React;
 
 // get store
 const { createStore } = Redux;
@@ -35,12 +38,13 @@ const init =  () => {
    // render app
    const render = () => {
       ReactDOM.render( <Provider store={store}>
-            <div>
-               <Sidebar/>
-               <Dashboard/>
-            </div>
+         <div>
+         <Sidebar/>
+         <Dashboard/>
+         </div>
          </Provider>,
-         document.getElementById("root"));
+         document.getElementById("root")
+      );
    }
    store.subscribe(render);
    render();
@@ -67,24 +71,27 @@ const init =  () => {
          swarmshots: data
       });
    });
+   store.dispatch({
+      type: "CONNECTED",
+      socket
+   });
+
+   Twitch.init({clientId: 'sdueuuz1fe2m3m8lnmnfkxr0tlzckbl'}, function(err, status){
+      if(status.authenticated){
+         socket.emit('twitchAuthLogin', status.token);
+      }
 
 
-     Twitch.init({clientId: 'sdueuuz1fe2m3m8lnmnfkxr0tlzckbl'}, function(err, status){
-        if(status.authenticated){
-           socket.emit('twitchAuthLogin', status.token);
-        }
+      /*
+      Twitch.logout(function(e){
+         if(e){
+            console.log('error logging out: ', e);
+         }
+         console.log('log out called');
+      })
+      */
 
-
-        /*
-        Twitch.logout(function(e){
-           if(e){
-             console.log('error logging out: ', e);
-           }
-           console.log('log out called');
-        })
-        */
-
-     });
+   });
 }
 
 // render when google is done loading

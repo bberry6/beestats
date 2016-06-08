@@ -1,40 +1,33 @@
-const React = require('react');
-const { Component } = React;
+import { Component } from 'react';
+import {connect} from 'react-redux';
 
 let SneezesDashboard = require('./sneezes/sneezesDashboard.jsx');
 let SwarmShotsDashboard = require('./swarmshots/swarmshotsDashboard.jsx');
 let NotReady = require('./notReady/notReady.jsx');
 
-class Dashboard extends Component {
-   componentDidMount(){
-      const {store} = this.context;
-      this.unsubscribe = store.subscribe(() => {
-         this.forceUpdate();
-      });
-   }
-   componentWillUnmount(){
-      this.unsubscribe();
-   }
-   render() {
-      let {store} = this.context;
-      return (
-         <div>
-         {(() => {
-           switch (store.getState().sidebar.filter((i)=>{return i.active})[0].name) {
-             case "Sneezes":
-               return <SneezesDashboard store={store}/>;
-             case "Swarm Shots":
-               return <SwarmShotsDashboard store={store}/>
-             default:
-               return <NotReady />;
-           }
-         })()}
-         </div>
-      )
+const Dash = ({sidebar}) => (
+   <div>
+   {(() => {
+     switch (sidebar.filter((i)=>{return i.active})[0].name) {
+       case "Sneezes":
+         return <SneezesDashboard/>
+       case "Swarm Shots":
+         return <SwarmShotsDashboard/>
+       default:
+         return <NotReady />
+     }
+   })()}
+   </div>
+)
+
+const mapStateToProps = (state, props) => {
+   return {
+      sidebar: state.sidebar
    }
 }
-Dashboard.contextTypes = {
-   store: React.PropTypes.object
-};
+
+const Dashboard = connect(
+   mapStateToProps
+)(Dash);
 
 module.exports = Dashboard;

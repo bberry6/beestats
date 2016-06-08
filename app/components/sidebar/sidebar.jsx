@@ -2,7 +2,7 @@ let SidebarOption = require("./option.jsx");
 const React = require('react');
 const { Component } = React;
 
-const sidebarDisplay = ({sidebar, sidebarVisible}) =>(
+const sidebarDisplay = ({sidebar, sidebarVisible, socketApi, onClick}) =>(
    <div className="row">
       <div className="col-sm-3 col-md-2 sidebar">
          <div className="page-header" style={{marginTop:"-15px"}}>
@@ -18,32 +18,7 @@ const sidebarDisplay = ({sidebar, sidebarVisible}) =>(
          }
          </ul>
          <footer class="footer">
-            <img src="http://ttv-api.s3.amazonaws.com/assets/connect_dark.png" class="twitch-connect" href="#" onClick={()=>{
-               console.log('calling twitch login');
-
-               let loginWindow = Twitch.login({
-                  redirect_uri: 'http://localhost:8001/closed.html',
-                  popup: true,
-                  scope:['user_read', 'channel_read']
-               });
-
-                  console.log('loginWindow: ', loginWindow)
-               let callback = () => {
-                  if(loginWindow &&
-                        loginWindow.location &&
-                        loginWindow.location.hash){
-                     let hash = loginWindow.location.hash
-                     let token = hash.slice(hash.indexOf('token=')+'token='.length, hash.indexOf('&'))
-                     console.log('stole token:', token);
-                     socket.emit('twitchAuthLogin', token);
-                     loginWindow.close();
-                     return;
-                  }
-                  setTimeout(callback, 200);
-               }
-               callback();
-
-            }}/>
+            <img src="http://ttv-api.s3.amazonaws.com/assets/connect_dark.png" class="twitch-connect" href="#" onClick={onClick.bind(null, socketApi)}/>
          </footer>
       </div>
    </div>
@@ -52,22 +27,46 @@ const sidebarDisplay = ({sidebar, sidebarVisible}) =>(
 const mapStateToProps = (state) => {
    return {
       sidebar: state.sidebar,
-      sidebarVisible: state.sidebarVisible
+      sidebarVisible: state.sidebarVisible,
+      socketApi: state.socketApi
    };
 };
 
-/*
 const mapDispatchToProps = (dispatch) =>{
    return {
-      onClick: (id) => { dispatch({...}) }
+      onClick: (socketApi)=>{
+         console.log('calling twitch login');
+
+         let loginWindow = Twitch.login({
+            redirect_uri: 'http://localhost:8001/closed.html',
+            popup: true,
+            scope:['user_read', 'channel_read']
+         });
+
+         let callback = () => {
+            if(loginWindow &&
+                  loginWindow.location &&
+                  loginWindow.location.hash){
+               let hash = loginWindow.location.hash
+               let token = hash.slice(hash.indexOf('token=')+'token='.length, hash.indexOf('&'))
+               console.log('stole token:', token);
+               loginWindow.close();
+               socketApi.emit('twitchAuthLogin', token);
+               return;
+            }
+            setTimeout(callback, 200);
+         }
+         callback();
+
+      }
    };
 };
-*/
 
 import { connect } from 'react-redux';
 
 const Sidebar = connect(
-   mapStateToProps
+   mapStateToProps,
+   mapDispatchToProps
 )(sidebarDisplay);
 
 module.exports = Sidebar;

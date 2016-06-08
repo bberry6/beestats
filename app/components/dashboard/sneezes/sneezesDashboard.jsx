@@ -8,7 +8,7 @@ let SneezeFrequency = require('./sneezeFrequency.jsx');
 
 class SneezesDashboard extends Component {
    render(){
-      let {store} = this.props;
+      let {store} = this.context;
       return(
          <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
             <div className="row">
@@ -86,12 +86,15 @@ class SneezesDashboard extends Component {
       )
    }
    componentDidMount(){
-      drawCharts(this.props.store);
+      drawCharts(this.context.store);
    }
    componentDidUpdate(){
-      drawCharts(this.props.store);
+      drawCharts(this.context.store);
    }
 };
+SneezesDashboard.contextTypes = {
+   store: React.PropTypes.object
+}
 
 const drawCharts = (store) => {
    drawSneezeTopFive(store);

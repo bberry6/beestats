@@ -12,6 +12,7 @@ let session = require('express-session')({
    resave: true,
    saveUninitialized: true
 });
+
 let sharedsession = require('express-socket.io-session');
 
 app.use(session);
@@ -48,7 +49,7 @@ let irc = require('irc');
 
 let pass = process.env.TWITCH_AUTH || fs.readFileSync('./ircpass', {encoding: 'utf8'});
 const settings = {
-   channels : ["#courtiebee"],
+   channels : ["#courtiebee", "#bberry7"],
    server : "irc.twitch.tv",
    port: 6667,
    secure: false,
@@ -105,8 +106,8 @@ io.on('connection', function (socket) {
          },
          method: 'get'
       })
-      .then(function(response){
-         console.log("GOT USERRRRR: ", response.body);
+      .then(function(user){
+         console.log("GOT USERRRRR: ", user)
       })
    });
    socket.on('twitchAuthLogout', function(authToken){

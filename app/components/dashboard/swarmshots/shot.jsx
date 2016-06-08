@@ -1,21 +1,36 @@
-const React = require('react');
-const { Component } = React;
 
-class Shot extends Component {
-   render(){
-      let {store} = this.props;
-      return(
-         <div className="col-md-3 thumb">
-            <a className="thumbnail" href="#" onClick={()=>
-               store.dispatch({
-                  type:'SELECT_SHOT',
-                  selectedImg: this.props.img
-               })
-            }>
-               <img className="img" src={this.props.img} alt/>
-            </a>
-         </div>
-      )
+import {Component} from 'react';
+import {connect} from 'react-redux';
+
+const ShotImg = ({img, onClick}) => (
+   <div className="col-md-3 thumb">
+      <a className="thumbnail" href="#" onClick={ onClick }>
+         <img className="img" src={img} alt/>
+      </a>
+   </div>
+)
+
+const mapStateToProps = (state, props) => {
+   return {
+      img: props.img
    }
 }
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+   return {
+      onClick: () => {
+         dispatch({
+            type: "SELECT_SHOT",
+            selectedImg: ownProps.img
+         });
+         $('#imagemodal').modal('show');
+      }
+   }
+}
+
+const Shot = connect(
+   mapStateToProps,
+   mapDispatchToProps
+)(ShotImg);
+
 module.exports = Shot;

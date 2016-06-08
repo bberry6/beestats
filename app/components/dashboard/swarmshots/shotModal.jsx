@@ -1,5 +1,5 @@
-const React = require('react');
-const { Component } = React;
+
+import {Component} from 'react';
 
 class ShotModal extends Component {
    render(){

@@ -1,40 +1,42 @@
 const classNames = require('classnames');
-const React = require('react');
-const { Component } = React;
+import {Component} from 'react';
+import {connect} from 'react-redux';
 
-class SidebarOption extends Component {
-   componentDidMount(){
-      const {store} = this.context;
-      this.unsubscribe = store.subscribe(() => {
-         this.forceUpdate();
-      });
-   }
-   componentWillUnmount(){
-      this.unsubscribe();
-   }
-   render(){
-      let {store} = this.context;
-      let cn = classNames({'active': this.props.opt.active});
-      return (
-         <li className={cn} onClick={(e)=> {
-               store.dispatch({
-                  name: this.props.opt.name,
-                  id: this.props.opt.id,
-                  img: this.props.opt.img,
-                  type: 'CHANGE_SCENE'
-               })
-            }}>
-            <a href="#">
-               <img src={this.props.opt.img} style={{marginRight: "10px", marginLeft: "-10px"}} />
-               <span>{store.getState().sidebarVisible ? this.props.opt.name : ''}</span>
-            </a>
-         </li>
-      )
-   }
-}
-SidebarOption.contextTypes = {
-   store: React.PropTypes.object
+const Option = ({active, img, name, sidebarVisible, onClick}) => (
+   <li className={classNames({'active': active})} onClick={onClick}>
+      <a href="#">
+         <img src={img} style={{marginRight: "10px", marginLeft: "-10px"}} />
+         <span>{sidebarVisible ? name : ''}</span>
+      </a>
+   </li>
+)
+
+const mapStateToProps = ( state, props ) => {
+   return {
+      active: props.opt.active,
+      img: props.opt.img,
+      name: props.opt.name,
+      sidebarVisible: state.sidebarVisible
+   };
 };
 
+const mapDispatchToProps = (dispatch, ownProps) => {
+   return {
+      onClick: () => {
+         console.log('option ownprops: ', ownProps);
+         dispatch({
+            name: ownProps.opt.name,
+            id: ownProps.opt.id,
+            img: ownProps.opt.img,
+            type: 'CHANGE_SCENE'
+         });
+      }
+   };
+};
+
+const SidebarOption = connect(
+   mapStateToProps,
+   mapDispatchToProps
+)(Option);
 
 module.exports = SidebarOption;
