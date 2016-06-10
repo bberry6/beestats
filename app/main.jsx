@@ -82,31 +82,20 @@ const init =  () => {
       socket
    });
 
-   window.setTwitch = function(t){
-      var sessKey = 'twitch_oauth_session';
-      sessionStorage.setItem(sessKey, t._storage.getItem(sessKey));
-      Twitch = window.Twitch = t;
-      defineTwitchListeners(Twitch);
-   }
+   Twitch.events.addListener('auth.login', function(){
+      socket.emit('twitchAuthLogin', Twitch.getToken());
+      $('.twitch-connect').hide();
+      $('.twitch-disconnect').show();
+   });
+   Twitch.events.addListener('auth.logout', function(){
+      socket.emit('twitchAuthLogout');
+      $('.twitch-connect').show();
+      $('.twitch-disconnect').hide();
+   });
 
-   function defineTwitchListeners(t){
-      t.events.addListener('auth.login', function(){
-         socket.emit('twitchAuthLogin', t.getToken());
-         $('.twitch-connect').hide();
-         $('.twitch-disconnect').show();
-      });
-      t.events.addListener('auth.logout', function(){
-         socket.emit('twitchAuthLogout');
-         $('.twitch-connect').show();
-         $('.twitch-disconnect').hide();
-      });
-
-      t.init({clientId: 'sdueuuz1fe2m3m8lnmnfkxr0tlzckbl'}, function(err, status){
-         console.log('initilized after login');
-      });
-   }
-
-   defineTwitchListeners(Twitch);
+   Twitch.init({clientId: 'sdueuuz1fe2m3m8lnmnfkxr0tlzckbl'}, function(err, status){
+      //console.log('initilized after login');
+   });
 }
 
 // render when google is done loading
