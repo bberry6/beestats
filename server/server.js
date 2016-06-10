@@ -99,6 +99,7 @@ io.on('connection', function (socket) {
       socket.emit('initSwarmShots', files.map(s=>{ return {img: 'swarmshots/'+s};}));
    });
    socket.on('twitchAuthLogin', function(authToken){
+      sessAPI.init(authToken);
       //sess.api = sessAPI(authToken);
    });
    socket.on('twitchAuthLogout', function(authToken){

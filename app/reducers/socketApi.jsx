@@ -7,7 +7,7 @@ const socket = (state = {}, action) => {
          }
       case 'TWITCH_CONNECT':
          Twitch.login({
-            redirect_uri: 'http://beestats.mooo.com/',
+            redirect_uri: 'http://localhost:8001/',
             scope:['user_read', 'channel_read']
          });
          return Object.assign({}, state, {
