@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+   <script src="jquery.min.js"></script>
+   <script src="https://ttv-api.s3.amazonaws.com/twitch.min.js"></script>
+   <script>
+      window.opener.setTwitch(Twitch, window.sessionStorage);
+   //   window.close();
+   </script>
 </head>
 <body>
-   This window should close automatically... sorry!
-   <script>
-      setTimeout(window.close, 15000);
-   </script>
 </body>
 
 </html>

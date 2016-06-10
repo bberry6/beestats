@@ -71,27 +71,42 @@ const init =  () => {
          swarmshots: data
       });
    });
+   socket.on('twitchAuthed', data => {
+      store.dispatch({
+         type: "TWITCH_AUTHED",
+         user: data
+      });
+   });
    store.dispatch({
       type: "CONNECTED",
       socket
    });
 
-   Twitch.init({clientId: 'sdueuuz1fe2m3m8lnmnfkxr0tlzckbl'}, function(err, status){
-      if(status.authenticated){
-         socket.emit('twitchAuthLogin', status.token);
-      }
+   window.setTwitch = function(t){
+      var sessKey = 'twitch_oauth_session';
+      sessionStorage.setItem(sessKey, t._storage.getItem(sessKey));
+      Twitch = window.Twitch = t;
+      defineTwitchListeners(Twitch);
+   }
 
+   function defineTwitchListeners(t){
+      t.events.addListener('auth.login', function(){
+         socket.emit('twitchAuthLogin', t.getToken());
+         $('.twitch-connect').hide();
+         $('.twitch-disconnect').show();
+      });
+      t.events.addListener('auth.logout', function(){
+         socket.emit('twitchAuthLogout');
+         $('.twitch-connect').show();
+         $('.twitch-disconnect').hide();
+      });
 
-      /*
-      Twitch.logout(function(e){
-         if(e){
-            console.log('error logging out: ', e);
-         }
-         console.log('log out called');
-      })
-      */
+      t.init({clientId: 'sdueuuz1fe2m3m8lnmnfkxr0tlzckbl'}, function(err, status){
+         console.log('initilized after login');
+      });
+   }
 
-   });
+   defineTwitchListeners(Twitch);
 }
 
 // render when google is done loading

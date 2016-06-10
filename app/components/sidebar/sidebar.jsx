@@ -2,7 +2,7 @@ let SidebarOption = require("./option.jsx");
 const React = require('react');
 const { Component } = React;
 
-const sidebarDisplay = ({sidebar, sidebarVisible, socketApi, onClick}) =>(
+const sidebarDisplay = ({sidebar, sidebarVisible, socketApi, onClickConnect, onClickDisconnect}) =>(
    <div className="row">
       <div className="col-sm-3 col-md-2 sidebar">
          <div className="page-header" style={{marginTop:"-15px"}}>
@@ -17,8 +17,12 @@ const sidebarDisplay = ({sidebar, sidebarVisible, socketApi, onClick}) =>(
             })
          }
          </ul>
-         <footer class="footer">
-            <img src="http://ttv-api.s3.amazonaws.com/assets/connect_dark.png" class="twitch-connect" href="#" onClick={onClick.bind(null, socketApi)}/>
+         <footer className="footer">
+            <img src="http://ttv-api.s3.amazonaws.com/assets/connect_dark.png" className="twitch-connect" href="#" onClick={onClickConnect}/>
+            <span className="twitch-disconnect" style={{display: 'none'}} onClick={onClickDisconnect}>
+               <img src="http://s.jtvnw.net/jtv_user_pictures/hosted_images/GlitchIcon_white.png"  href="#"/>
+               {(socketApi.user && socketApi.user.name) || ''}
+            </span>
          </footer>
       </div>
    </div>
@@ -34,30 +38,15 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) =>{
    return {
-      onClick: (socketApi)=>{
-         console.log('calling twitch login');
-
-         let loginWindow = Twitch.login({
-            redirect_uri: 'http://localhost:8001/closed.html',
-            popup: true,
-            scope:['user_read', 'channel_read']
+      onClickConnect: ()=>{
+         dispatch({
+            type: "TWITCH_CONNECT"
          });
-
-         let callback = () => {
-            if(loginWindow &&
-                  loginWindow.location &&
-                  loginWindow.location.hash){
-               let hash = loginWindow.location.hash
-               let token = hash.slice(hash.indexOf('token=')+'token='.length, hash.indexOf('&'))
-               console.log('stole token:', token);
-               loginWindow.close();
-               socketApi.emit('twitchAuthLogin', token);
-               return;
-            }
-            setTimeout(callback, 200);
-         }
-         callback();
-
+      },
+      onClickDisconnect: () => {
+         dispatch({
+            type: "TWITCH_DISCONNECT"
+         });
       }
    };
 };

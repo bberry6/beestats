@@ -6,7 +6,6 @@ let fs = require('fs');
 let app = express();
 let pgp = require('pg-promise')();
 let R = require('ramda');
-let bhttp = require('bhttp');
 let session = require('express-session')({
    secret: 'some-secret',
    resave: true,
@@ -85,7 +84,10 @@ ircbot.addListener('message',  (fr, ch, message) => {
     }
 });
 
+const sessAPI = require('./sessapi.js');
+
 io.on('connection', function (socket) {
+   let sess = socket.handshake.session;
    socket.join('beestats');
    db.any("select * from sneezes")
    .then((sneezes) => {
@@ -97,20 +99,10 @@ io.on('connection', function (socket) {
       socket.emit('initSwarmShots', files.map(s=>{ return {img: 'swarmshots/'+s};}));
    });
    socket.on('twitchAuthLogin', function(authToken){
-      socket.handshake.session.twitchAuth = {};
-      socket.handshake.session.twitchAuth.authToken = authToken;
-      bhttp.request("https://api.twitch.tv/kraken/user", {
-         headers: {
-             Accept: 'application/vnd.twitchtv.v3+json',
-             Authorization: 'OAuth '+authToken
-         },
-         method: 'get'
-      })
-      .then(function(user){
-         console.log("GOT USERRRRR: ", user)
-      })
+      //sess.api = sessAPI(authToken);
    });
    socket.on('twitchAuthLogout', function(authToken){
-      delete socket.handshake.session.twitchAuth;
+      //delete socket.handshake.session.twitchAuth;
    });
+
 });
