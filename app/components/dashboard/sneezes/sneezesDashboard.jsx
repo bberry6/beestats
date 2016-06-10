@@ -1,5 +1,6 @@
 const React = require('react');
 const { Component } = React;
+const R = require('ramda');
 
 let SneezeItem = require('./sneezeItem.jsx');
 let StopWatch = require('./stopwatch.jsx');
@@ -104,7 +105,7 @@ const drawCharts = (store) => {
 function drawSneezeFrequency(store) {
    let sneezeData = store.getState().sneezeList.reduce((freq, sn, i)=>{
       let snDate = new Date(Number(sn.time));
-      let fDate = (snDate.getMonth()+1) + '/' + snDate.getDate();
+      let fDate = (snDate.getMonth()+1) + '/' + snDate.getDate() + "/" + snDate.getFullYear();
       let fDateMillis = (new Date(fDate)).getTime();
       if(!freq[fDate]){
          freq[fDate] = {d: fDate, c: 0, millis: fDateMillis };
@@ -114,9 +115,9 @@ function drawSneezeFrequency(store) {
    },{});
    sneezeData = Object.keys(sneezeData).map((k, i)=>{
       return [sneezeData[k].d,sneezeData[k].c,sneezeData[k].millis];
-   })
-   .sort((a,b)=> a[2] > b[2])
-   .map(a => [a[0],a[1]]);
+   });
+   sneezeData = R.sortBy(R.prop(2), sneezeData);
+   sneezeData = sneezeData.map(a => [a[0],a[1]]);
    let data = new google.visualization.DataTable();
    data.addColumn('string', 'Time');
    data.addColumn('number', 'Count');
