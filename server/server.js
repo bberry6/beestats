@@ -123,3 +123,13 @@ io.on('connection', function (socket) {
    });
 
 });
+
+//keepalive for heroku
+const http = require('http');
+const second = 1000;
+const minute = 60*second;
+
+
+setInterval(function(){
+   http.get('http://beestats.herokuapp.com');
+},29*minute);
