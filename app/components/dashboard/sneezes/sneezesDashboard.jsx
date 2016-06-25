@@ -87,6 +87,7 @@ class SneezesDashboard extends Component {
       )
    }
    componentDidMount(){
+      window.addEventListener('resize', drawCharts.bind(drawCharts, this.context.store));
       drawCharts(this.context.store);
    }
    componentDidUpdate(){
@@ -96,6 +97,7 @@ class SneezesDashboard extends Component {
 SneezesDashboard.contextTypes = {
    store: React.PropTypes.object
 }
+
 
 const drawCharts = (store) => {
    drawSneezeTopFive(store);
@@ -157,19 +159,20 @@ function drawSneezeTopFive(store) {
    sneezeData = Object.keys(sneezeData).map((k, i)=>{
       return [k,sneezeData[k]];
    })
-   .sort((a,b)=> a[1] < b[1])
-   .slice(0,5)
+
+   sneezeData = R.reverse(R.sortBy(R.prop(1), sneezeData));
+   let sneezeData2 = sneezeData.slice(0,5)
    .map((a,i) => {
       a[2] = 'color:'+colors[i];
       return a;
    });
-   sneezeData = sneezeData.slice(0,5);
+
    let data = new google.visualization.DataTable();
    data.addColumn('string', 'Username');
    data.addColumn('number', 'Count');
    data.addColumn({type:'string',role:'style'})
 
-   data.addRows(sneezeData);
+   data.addRows(sneezeData2);
 
 
    var options = {

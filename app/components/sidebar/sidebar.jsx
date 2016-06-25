@@ -3,28 +3,33 @@ const React = require('react');
 const { Component } = React;
 
 const sidebarDisplay = ({sidebar, sidebarVisible, socketApi, onClickConnect, onClickDisconnect}) =>(
-   <div className="row">
-      <div className="col-sm-3 col-md-2 sidebar">
-         <div className="page-header" style={{marginTop:"-15px"}}>
-            <h3>{sidebarVisible ? 'Bee Stats' : ''}</h3>
+   <div>
+      <div className="row">
+         <div className="col-sm-3 col-md-2 sidebar">
+            <div className="page-header" style={{marginTop:"-15px"}}>
+               <h3>{sidebarVisible ? 'Bee Stats' : ''}</h3>
+            </div>
+            <ul className="nav nav-sidebar">
+            {
+               sidebar.map(function(s, idx){
+                  return (
+                     <SidebarOption opt={s} key={idx} />
+                  );
+               })
+            }
+            </ul>
          </div>
-         <ul className="nav nav-sidebar">
-         {
-            sidebar.map(function(s, idx){
-               return (
-                  <SidebarOption opt={s} key={idx} />
-               );
-            })
-         }
-         </ul>
-         <footer className="footer">
-            <img src="http://ttv-api.s3.amazonaws.com/assets/connect_dark.png" className="twitch-connect" href="#" onClick={onClickConnect}/>
-            <span className="twitch-disconnect" style={{display: 'none'}} onClick={onClickDisconnect}>
-               <img src="http://s.jtvnw.net/jtv_user_pictures/hosted_images/GlitchIcon_white.png"  href="#"/>
-               {(socketApi.user && socketApi.user.name) || ''}
-            </span>
-         </footer>
       </div>
+      <footer className="footer" style={{position:'fixed',bottom:0, zIndex:1000 }}>
+         <span className="twitch-connect" style={{cursor: 'pointer'}} onClick={onClickConnect}>
+            <img src="http://s.jtvnw.net/jtv_user_pictures/hosted_images/GlitchIcon_white.png" style={{"width": '30px'}}  href="#"/>
+            Log-in
+         </span>
+         <span className="twitch-disconnect" style={{display: 'none', cursor: 'pointer'}} onClick={onClickDisconnect}>
+            <img src="http://s.jtvnw.net/jtv_user_pictures/hosted_images/GlitchIcon_white.png" style={{"width": '30px'}}  href="#"/>
+            Logout: {(socketApi.user && socketApi.user.name) || ''}
+         </span>
+      </footer>
    </div>
 )
 

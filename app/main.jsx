@@ -65,7 +65,7 @@ const init =  () => {
          sneezes: data
       });
    });
-   socket.on('initSwarmShots', (data) => {
+   socket.on('initSwarmshots', (data) => {
       store.dispatch({
          type: "INIT_SHOTS",
          swarmshots: data
@@ -74,7 +74,8 @@ const init =  () => {
    socket.on('twitchAuthed', data => {
       store.dispatch({
          type: "TWITCH_AUTHED",
-         user: data
+         user: data.user,
+         perms: data.perms
       });
    });
    store.dispatch({

@@ -23,7 +23,6 @@ const mapStateToProps = ( state, props ) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
    return {
       onClick: () => {
-         console.log('option ownprops: ', ownProps);
          dispatch({
             name: ownProps.opt.name,
             id: ownProps.opt.id,

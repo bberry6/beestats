@@ -84,7 +84,7 @@ ircbot.addListener('message',  (fr, ch, message) => {
     }
 });
 
-const sessAPI = require('./sessapi.js');
+const sessAPI = require('./sessapi.js')(db);
 
 io.on('connection', function (socket) {
    let sess = socket.handshake.session;
@@ -95,15 +95,31 @@ io.on('connection', function (socket) {
       sneezes = sortByCount(sneezes);
       socket.emit('initSneezes', sneezes.reverse());
    });
-   fs.readdir(path.join(__dirname,'/../app/dist/swarmshots'), function(err, files){
-      socket.emit('initSwarmShots', files.map(s=>{ return {img: 'swarmshots/'+s};}));
+   db.any("select * from swarmshots")
+   .then((shots) => {
+      socket.emit('initSwarmshots', shots);
    });
    socket.on('twitchAuthLogin', function(authToken){
-      sessAPI.init(authToken);
-      //sess.api = sessAPI(authToken);
+      sessAPI.init(authToken)
+      .then(function(res){
+         sess.token = res.token;
+         sess.user = res.user;
+         sess.perms = res.perms;
+         if(res.perms.length){
+            res.perms.forEach((permName)=>{
+               socket.on(permName, sessAPI[permName]);
+            });
+         }
+         socket.emit('twitchAuthed', {user: res.user, perms: res.perms});
+      });
    });
-   socket.on('twitchAuthLogout', function(authToken){
-      //delete socket.handshake.session.twitchAuth;
+   socket.on('twitchAuthLogout', function(){
+      if(sess.perms && sess.perms.length){
+         sess.perms.forEach((permName)=>{
+            socket.removeListener(permName, sessAPI[permName]);
+         });
+      }
+      sess = {};
    });
 
 });

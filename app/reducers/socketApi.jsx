@@ -1,5 +1,12 @@
+const P = require('bluebird');
 
-const socket = (state = {}, action) => {
+const defaults = {
+   twitchAuthStatus: 'unauthorized',
+   user: {},
+   perms: []
+}
+
+const socket = (state = defaults, action) => {
    switch(action.type){
       case 'CONNECTED':
          return {
@@ -7,22 +14,22 @@ const socket = (state = {}, action) => {
          }
       case 'TWITCH_CONNECT':
          Twitch.login({
-            redirect_uri: 'http://beestats.mooo.com/',
+            //redirect_uri: 'http://beestats.mooo.com/',
+            redirect_uri: 'http://localhost:8001/',
             scope:['user_read', 'channel_read']
          });
          return Object.assign({}, state, {
             twitchAuthStatus: 'authorizing'
          });
       case 'TWITCH_DISCONNECT':
-         console.log('getting otken in disconnect: ', Twitch.getToken());
+         state.socket.emit('twitchAuthLogout');
          Twitch.logout();
-         return Object.assign({}, state, {
-            twitchAuthStatus: 'unauthorized'
-         });
+         return defaults;
       case 'TWITCH_AUTHED':
          return Object.assign({}, state, {
             twitchAuthStatus: 'authorized',
-            user: action.user
+            user: action.user,
+            perms: action.perms
          });
       default:
          return state;

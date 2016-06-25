@@ -2,28 +2,46 @@
 import {Component} from 'react';
 import {connect} from 'react-redux';
 
-const ShotImg = ({img, onClick}) => (
+const ShotImg = ({shot, socketApi, onClick, onDelete}) => (
    <div className="col-md-3 thumb">
-      <a className="thumbnail" href="#" onClick={ onClick }>
-         <img className="img" src={img} alt/>
-      </a>
+      <div className="thumbnail">
+         <button type="button" onClick={onDelete(socketApi)} className="close" aria-hidden="true" style={{width: '30px', color: 'red'}}>&times;</button>
+         <p>Uploaded By: {shot.uploadedby}</p>
+         <p>Date: {(new Date(Number(shot.time))).toLocaleString()}</p>
+         <a href="#" onClick={ onClick }>
+            <img className="img" src={shot.url} style={{height: '250px'}} alt/>
+         </a>
+      </div>
    </div>
 )
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state, {shot}) => {
    return {
-      img: props.img
+      shot,
+      socketApi: state.socketApi
    }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch, {shot}) => {
    return {
       onClick: () => {
          dispatch({
             type: "SELECT_SHOT",
-            selectedImg: ownProps.img
+            selected: shot
          });
          $('#imagemodal').modal('show');
+      },
+      onDelete: (socketApi) => {
+         return () =>{
+            $("#loadingOverlay").show();
+            socketApi.socket.emit('swarmShotDeleted', shot, function(){
+               dispatch({
+                  type: 'DELETE_SHOT',
+                  selected: shot
+               });
+               $("#loadingOverlay").hide();
+            });
+         }
       }
    }
 }

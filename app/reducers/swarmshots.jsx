@@ -1,10 +1,29 @@
+const R = require('ramda');
 
-const swarmShots = (state = [], action) => {
+
+const defaults = {
+   selected: undefined,
+   list: []
+}
+
+const swarmShots = (state = defaults, action) => {
    switch(action.type){
       case 'INIT_SHOTS':
-         return action.swarmshots;
+         return Object.assign({}, state, {
+            list: action.swarmshots
+         });
       case 'SELECT_SHOT':
-         return state.map((shot)=>{shot.selected = shot.img === action.selectedImg; return shot; });
+         return Object.assign({}, state, {
+            selected: action.selected
+         });
+      case "ADD_SHOT":
+         return Object.assign({}, state, {
+            list: state.list.concat(action.newShot)
+         });
+      case "DELETE_SHOT":
+         return Object.assign({}, state, {
+            list: R.reject(R.whereEq(action.selected), state.list)
+         });
       default:
          return state;
    }
