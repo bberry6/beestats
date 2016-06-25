@@ -87,7 +87,6 @@ class SneezesDashboard extends Component {
       )
    }
    componentDidMount(){
-      window.addEventListener('resize', drawCharts.bind(drawCharts, this.context.store));
       drawCharts(this.context.store);
    }
    componentDidUpdate(){
