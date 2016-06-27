@@ -2,10 +2,10 @@
 import {Component} from 'react';
 import {connect} from 'react-redux';
 
-const ShotImg = ({shot, socketApi, onClick, onDelete}) => (
+const ShotImg = ({shot, socketApi, onClick, onDelete, deletePerm}) => (
    <div className="col-md-3 thumb">
       <div className="thumbnail">
-         <button type="button" onClick={onDelete(socketApi)} className="close" aria-hidden="true" style={{width: '30px', color: 'red'}}>&times;</button>
+         <button type="button" onClick={onDelete(socketApi)} className="close" aria-hidden="true" style={{width: '30px', color: 'red', display: deletePerm ? "block" : "none"}}>&times;</button>
          <p>Uploaded By: {shot.uploadedby}</p>
          <p>Date: {(new Date(Number(shot.time))).toLocaleString()}</p>
          <a href="#" onClick={ onClick }>
@@ -16,8 +16,10 @@ const ShotImg = ({shot, socketApi, onClick, onDelete}) => (
 )
 
 const mapStateToProps = (state, {shot}) => {
+   const perms = state.socketApi.perms;
    return {
       shot,
+      deletePerm: perms && perms.indexOf('swarmShotDeleted') >= 0,
       socketApi: state.socketApi
    }
 }
